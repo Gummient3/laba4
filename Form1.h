@@ -461,6 +461,7 @@ namespace CppCLRWinformsProjekt {
 		}
 #pragma endregion
 	private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		
 
 		zeroFormat(textBox1);
 
@@ -548,6 +549,9 @@ private: System::Void textBox1_Click(System::Object^ sender, System::EventArgs^ 
 	
 }
 private: System::Void textBox1_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
+	if (textBox1->TextLength >= 6 && e->KeyChar != 8) { // 8 backspace
+		e->Handled = true;
+	}
 
 
 	formatfunc(e, this->textBox1);
