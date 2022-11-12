@@ -1,4 +1,3 @@
 ﻿  CppCLR_WinformsProjekt.cpp
-C:\Users\rikud\source\repos\laba4\Form1.h(331,17): warning C4566: символ, представленный универсальным именем символа "\u20BD", невозможно представить в текущей кодовой странице (1251)
   AssemblyInfo.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
   laba4.vcxproj -> C:\Users\rikud\source\repos\laba4\Debug\laba4.exe

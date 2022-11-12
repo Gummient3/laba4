@@ -19,15 +19,15 @@ struct Curs { // Данные актуальных курсо валют на 12
 
 	struct Sell
 	{
-		Double dollar = 66.90;
-		Double euro = 65.80;
+		Double dollar = 61.10;
+		Double euro = 60.50;
 
 	};
 
 	struct Buy
 	{
-		Double  dollar = 61.10 ;
-		Double euro  = 60.50 ;
+		Double  dollar = 66.90;
+		Double euro  = 65.80;
 	};
 
 	Buy buy;
@@ -64,6 +64,129 @@ namespace CppCLRWinformsProjekt {
 	{
 	public:
 
+		void zeroFormat(System::Windows::Forms::TextBox^ txt) {
+			if (txt->Text->Contains("00") && txt->TextLength == 2) {
+				txt->Text = "0";
+				txt->SelectionStart = txt->Text->Length;
+			}
+
+			int mas[10];
+			for (int i : mas) {
+
+			}
+		}
+
+		void Clear(System::Windows::Forms::TextBox^ txt1, System::Windows::Forms::TextBox^ txt2, System::Windows::Forms::TextBox^ txt3, System::Windows::Forms::TextBox^ txt4, System::Windows::Forms::TextBox^ txt5, System::Windows::Forms::Label^ lbl1) {
+			txt1->Text = "";
+			txt2->Text = "";
+			txt3->Text = "";
+			txt4->Text = "";
+			txt5->Text = "";
+			label7->Text = "";
+
+
+		}
+
+		/*void Clear1(System::Windows::Forms::TextBox num, ...)
+		{
+			va_list ap;
+			int j;
+			double sum = 0;
+			va_start(ap, num);
+			for (j = 0; j < ; j++) {
+				va_arg(ap, double);
+			}
+			va_end(ap);
+		}
+			*/
+
+
+		void formatfunc(System::Windows::Forms::KeyPressEventArgs^ e, System::Windows::Forms::TextBox^ txt) {
+
+			if ((e->KeyChar <= 47 || e->KeyChar >= 58) && e->KeyChar != 8)
+			{
+				e->Handled = true;
+			}
+			if (e->KeyChar == ',' && txt->TextLength == 0) {
+				txt->Text = "0,";
+				//txt->SelectionStart = txt->Text->Length;
+			}
+			if (e->KeyChar == ',') {
+				String^ s = txt->Text->ToString();
+				int counter = 0;
+				for (int x = 0; x < txt->TextLength; x++) {
+					if (s[x] == ',') { counter++; }
+				}
+				if (counter < 1) {
+					txt->Text += ",";
+				}
+				//txt->SelectionStart = txt->Text->Length;
+
+			}
+			try {
+				if (txt->Text->ToString()[0] != '-' && txt->TextLength >= 1 && e->KeyChar == '-') {
+					txt->Text = "-" + txt->Text;
+					txt->SelectionStart = txt->Text->Length;
+
+
+				}
+				else if (txt->Text->ToString()[0] == '-' && txt->TextLength >= 1 && e->KeyChar == '-') {
+					String^ tmptxt = "";
+
+					for (int i = 1;;) {
+						tmptxt += txt->Text[i];
+						i++;
+						if (i == txt->TextLength) {
+							txt->Text = tmptxt;
+							break;
+						}
+					}
+					//txt->SelectionStart = txt->Text->Length;
+
+
+				}
+			}
+			catch (...) {
+
+			}
+
+
+
+
+
+
+			if (e->KeyChar == 45 && txt->TextLength == 0) {
+				String^ s = txt->Text->ToString();
+				int counter = 0;
+				for (int x = 0; x < txt->TextLength; x++) {
+					if (s[x] == '-') { counter++; }
+				}
+				if (counter < 1) {
+					txt->Text += "-";
+				}
+				//txt->SelectionStart = txt->Text->Length;
+			}
+			if (txt->Text == "-," && txt->TextLength == 2) {
+				txt->Text = "-0,";
+				//txt->SelectionStart = txt->Text->Length;
+			}
+
+
+
+
+
+
+			txt->SelectionStart = txt->Text->Length;
+
+		}
+		
+
+		void Clear(System::Windows::Forms::TextBox^ txt1, System::Windows::Forms::TextBox^ txt2) {
+			txt1->Text = "";
+			txt2->Text = "";
+
+
+		}
 
 		
 		
@@ -145,6 +268,7 @@ namespace CppCLRWinformsProjekt {
 			this->textBox1->Size = System::Drawing::Size(100, 20);
 			this->textBox1->TabIndex = 0;
 			this->textBox1->TextChanged += gcnew System::EventHandler(this, &Form1::textBox1_TextChanged);
+			this->textBox1->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Form1::textBox1_KeyPress);
 			// 
 			// textBox2
 			// 
@@ -158,6 +282,7 @@ namespace CppCLRWinformsProjekt {
 			// 
 			this->textBox3->Location = System::Drawing::Point(12, 175);
 			this->textBox3->Name = L"textBox3";
+			this->textBox3->ReadOnly = true;
 			this->textBox3->Size = System::Drawing::Size(62, 20);
 			this->textBox3->TabIndex = 2;
 			// 
@@ -165,6 +290,7 @@ namespace CppCLRWinformsProjekt {
 			// 
 			this->textBox4->Location = System::Drawing::Point(194, 175);
 			this->textBox4->Name = L"textBox4";
+			this->textBox4->ReadOnly = true;
 			this->textBox4->Size = System::Drawing::Size(62, 20);
 			this->textBox4->TabIndex = 3;
 			// 
@@ -211,9 +337,9 @@ namespace CppCLRWinformsProjekt {
 			this->label7->AutoSize = true;
 			this->label7->Location = System::Drawing::Point(89, 178);
 			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(10, 13);
+			this->label7->Size = System::Drawing::Size(13, 13);
 			this->label7->TabIndex = 10;
-			this->label7->Text = L"!";
+			this->label7->Text = L"[]";
 			this->label7->Click += gcnew System::EventHandler(this, &Form1::label7_Click);
 			// 
 			// label8
@@ -221,9 +347,9 @@ namespace CppCLRWinformsProjekt {
 			this->label8->AutoSize = true;
 			this->label8->Location = System::Drawing::Point(271, 178);
 			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(10, 13);
+			this->label8->Size = System::Drawing::Size(13, 13);
 			this->label8->TabIndex = 11;
-			this->label8->Text = L"!";
+			this->label8->Text = L"[]";
 			// 
 			// label9
 			// 
@@ -242,6 +368,7 @@ namespace CppCLRWinformsProjekt {
 			this->button1->TabIndex = 13;
 			this->button1->Text = L"Конвертировать";
 			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &Form1::button1_Click);
 			// 
 			// button2
 			// 
@@ -251,6 +378,7 @@ namespace CppCLRWinformsProjekt {
 			this->button2->TabIndex = 14;
 			this->button2->Text = L"Закрыть";
 			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &Form1::button2_Click);
 			// 
 			// radioButton1
 			// 
@@ -289,6 +417,7 @@ namespace CppCLRWinformsProjekt {
 			this->radioButton3->TabStop = true;
 			this->radioButton3->Text = L"Евро в рубли";
 			this->radioButton3->UseVisualStyleBackColor = true;
+			this->radioButton3->CheckedChanged += gcnew System::EventHandler(this, &Form1::radioButton3_CheckedChanged);
 			// 
 			// radioButton4
 			// 
@@ -300,6 +429,7 @@ namespace CppCLRWinformsProjekt {
 			this->radioButton4->TabStop = true;
 			this->radioButton4->Text = L"Рубли в евро";
 			this->radioButton4->UseVisualStyleBackColor = true;
+			this->radioButton4->CheckedChanged += gcnew System::EventHandler(this, &Form1::radioButton4_CheckedChanged);
 			// 
 			// Form1
 			// 
@@ -331,6 +461,13 @@ namespace CppCLRWinformsProjekt {
 		}
 #pragma endregion
 	private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+
+		zeroFormat(textBox1);
+
+		if (textBox1->Text == "") {
+
+			Clear(this->textBox3, this->textBox4);
+		}
 	}
 	private: System::Void label3_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
@@ -344,12 +481,76 @@ private: System::Void radioButton1_Paint(System::Object^ sender, System::Windows
 }
 private: System::Void radioButton1_Click(System::Object^ sender, System::EventArgs^ e) { // Доллары в рубли (продажа)
 	label2->Text = "Курс обмена [$/rub]:";
-	//textBox1->Text = Curs::Sell::dollar;
+	textBox2->Text = System::Convert::ToString(curs.sell.dollar);
+	
 	
 
 	
 }
-private: System::Void radioButton2_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+private: System::Void radioButton2_CheckedChanged(System::Object^ sender, System::EventArgs^ e) { // Рубли в доллары (покупка)
+	label2->Text = "Курс обмена [rub/$]:";
+	textBox2->Text = System::Convert::ToString(curs.buy.dollar);
+
+
+}
+private: System::Void radioButton3_CheckedChanged(System::Object^ sender, System::EventArgs^ e) { // Евро в рубли (продажа)
+
+	label2->Text = "Курс обмена [€/rub]:";
+	textBox2->Text = System::Convert::ToString(curs.sell.euro);
+
+}
+private: System::Void radioButton4_CheckedChanged(System::Object^ sender, System::EventArgs^ e) { // Рубли в евро (покупка)
+
+	label2->Text = "Курс обмена [rub/€]:";
+	textBox2->Text = System::Convert::ToString(curs.buy.euro);
+}
+private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	if (!(textBox1->Text == System::Convert::ToString(""))) {
+
+		textBox3->Text = textBox1->Text;
+		if (label2->Text == "Курс обмена [€/rub]:") {
+			label7->Text = "€";
+			label8->Text = "rub";
+			textBox4->Text = (System::Convert::ToString(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text)));
+			
+		}
+		else if (label2->Text == "Курс обмена [rub/€]:") {
+			label7->Text = "rub";
+			label8->Text = "€";
+			textBox4->Text = (System::Convert::ToString(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text)));
+		}
+		else if (label2->Text == "Курс обмена [rub/$]:") {
+			label7->Text = "rub";
+			label8->Text = "$";
+			textBox4->Text = (System::Convert::ToString(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text)));
+		}
+		else if (label2->Text == "Курс обмена [$/rub]:") {
+			label7->Text = "$";
+			label8->Text = "rub";
+			textBox4->Text = (System::Convert::ToString(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text)));
+
+
+		}
+		
+
+	}
+	else {
+		Clear(this->textBox3, this->textBox4);
+	}
+}
+private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->Close();
+}
+private: System::Void textBox1_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	
+}
+private: System::Void textBox1_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
+
+
+	formatfunc(e, this->textBox1);
+
 }
 };
 }
