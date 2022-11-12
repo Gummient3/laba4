@@ -512,23 +512,24 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		if (label2->Text == "Курс обмена [€/rub]:") {
 			label7->Text = "€";
 			label8->Text = "rub";
-			textBox4->Text = (System::Convert::ToString(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text)));
+			textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text) * 1000) / 1000));
 			
 		}
 		else if (label2->Text == "Курс обмена [rub/€]:") {
 			label7->Text = "rub";
 			label8->Text = "€";
-			textBox4->Text = (System::Convert::ToString(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text)));
+			textBox4->Text = (System::Convert::ToString(  floor(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text)*1000)/1000    ));
+			
 		}
 		else if (label2->Text == "Курс обмена [rub/$]:") {
 			label7->Text = "rub";
 			label8->Text = "$";
-			textBox4->Text = (System::Convert::ToString(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text)));
+			textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text) * 1000) / 1000));
 		}
 		else if (label2->Text == "Курс обмена [$/rub]:") {
 			label7->Text = "$";
 			label8->Text = "rub";
-			textBox4->Text = (System::Convert::ToString(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text)));
+			textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text) * 1000) / 1000));
 
 
 		}
