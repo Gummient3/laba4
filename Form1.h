@@ -39,7 +39,7 @@ struct Curs { // Данные актуальных курсо валют на 12
 
 
 };
-struct Cusr curs;
+struct Curs curs;
 
 
 
