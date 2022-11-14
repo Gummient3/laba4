@@ -453,6 +453,7 @@ namespace CppCLRWinformsProjekt {
 			this->Controls->Add(this->textBox3);
 			this->Controls->Add(this->textBox2);
 			this->Controls->Add(this->textBox1);
+			this->MaximizeBox = false;
 			this->Name = L"Form1";
 			this->Text = L"Form1";
 			this->ResumeLayout(false);
