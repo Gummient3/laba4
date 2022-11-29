@@ -1,3 +1,5 @@
 ﻿  CppCLR_WinformsProjekt.cpp
+C:\Users\rikud\source\repos\laba4\Form1.h(655,1): warning C4965: неявная упаковка целого числа 0; используйте nullptr или явное приведение типов
+C:\Users\rikud\source\repos\laba4\Form1.h(660,1): warning C4965: неявная упаковка целого числа 0; используйте nullptr или явное приведение типов
   AssemblyInfo.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
   laba4.vcxproj -> C:\Users\rikud\source\repos\laba4\Debug\laba4.exe

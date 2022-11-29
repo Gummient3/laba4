@@ -70,10 +70,37 @@ namespace CppCLRWinformsProjekt {
 				txt->SelectionStart = txt->Text->Length;
 			}
 
-			int mas[10];
-			for (int i : mas) {
+			
+		}
 
+		
+		void endsWithZero(System::Windows::Forms::TextBox^ txt) {
+			
+
+			
+			if (txt->Text == "0," || txt->Text == "0" || txt->Text == "0,00" || txt->Text == "0") {
+				//MessageBox::Show("Сумма слишком мала для конвертации");
+				button1->Enabled = false;
 			}
+			else {
+				if (txt->Text != "") {
+					button1->Enabled = true;
+				}
+			}
+			if ((!txt->Text->Contains(",")) && txt->Text != "") {
+				//MessageBox::Show(",");
+				txt->Text += ",00";
+			}
+			else if (txt->Text->EndsWith(",")) {
+				txt->Text += "00";
+			}
+			else if ( (txt->Text->IndexOf(",") - txt->TextLength) == -2 ) {
+				txt->Text += "0";
+				//MessageBox::Show("==2");
+			}
+			
+
+
 		}
 
 		void Clear(System::Windows::Forms::TextBox^ txt1, System::Windows::Forms::TextBox^ txt2, System::Windows::Forms::TextBox^ txt3, System::Windows::Forms::TextBox^ txt4, System::Windows::Forms::TextBox^ txt5, System::Windows::Forms::Label^ lbl1) {
@@ -123,7 +150,7 @@ namespace CppCLRWinformsProjekt {
 				//txt->SelectionStart = txt->Text->Length;
 
 			}
-			try {
+			/*try {
 				if (txt->Text->ToString()[0] != '-' && txt->TextLength >= 1 && e->KeyChar == '-') {
 					txt->Text = "-" + txt->Text;
 					txt->SelectionStart = txt->Text->Length;
@@ -169,6 +196,12 @@ namespace CppCLRWinformsProjekt {
 			if (txt->Text == "-," && txt->TextLength == 2) {
 				txt->Text = "-0,";
 				//txt->SelectionStart = txt->Text->Length;
+			}
+			*/
+			int myindex = txt->TextLength - (txt->Text->IndexOf(","));
+			if ( (myindex == 3) && (e->KeyChar != 8) && (txt->Text->Contains(",")) ) {
+				e->Handled = true;
+				//MessageBox::Show("я все залочил 191 строка");
 			}
 
 
@@ -269,6 +302,7 @@ namespace CppCLRWinformsProjekt {
 			this->textBox1->TabIndex = 0;
 			this->textBox1->TextChanged += gcnew System::EventHandler(this, &Form1::textBox1_TextChanged);
 			this->textBox1->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Form1::textBox1_KeyPress);
+			this->textBox1->Leave += gcnew System::EventHandler(this, &Form1::textBox1_Leave);
 			// 
 			// textBox2
 			// 
@@ -285,6 +319,7 @@ namespace CppCLRWinformsProjekt {
 			this->textBox3->ReadOnly = true;
 			this->textBox3->Size = System::Drawing::Size(62, 20);
 			this->textBox3->TabIndex = 2;
+			this->textBox3->TextChanged += gcnew System::EventHandler(this, &Form1::textBox3_TextChanged);
 			// 
 			// textBox4
 			// 
@@ -293,6 +328,7 @@ namespace CppCLRWinformsProjekt {
 			this->textBox4->ReadOnly = true;
 			this->textBox4->Size = System::Drawing::Size(62, 20);
 			this->textBox4->TabIndex = 3;
+			this->textBox4->TextChanged += gcnew System::EventHandler(this, &Form1::textBox4_TextChanged);
 			// 
 			// label1
 			// 
@@ -456,12 +492,23 @@ namespace CppCLRWinformsProjekt {
 			this->MaximizeBox = false;
 			this->Name = L"Form1";
 			this->Text = L"Form1";
+			this->Shown += gcnew System::EventHandler(this, &Form1::Form1_Shown);
+			this->Click += gcnew System::EventHandler(this, &Form1::Form1_Click);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
 	private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (textBox1->Text == "") {
+			button1->Enabled = false;
+		}
+		else {
+			button1->Enabled = true;
+		}
+
+		
+		//endsWithZero(this->textBox1);
 		
 
 		zeroFormat(textBox1);
@@ -482,65 +529,77 @@ private: System::Void label7_Click(System::Object^ sender, System::EventArgs^ e)
 private: System::Void radioButton1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 }
 private: System::Void radioButton1_Click(System::Object^ sender, System::EventArgs^ e) { // Доллары в рубли (продажа)
+	//button1->Enabled = true;
 	label2->Text = "Курс обмена [$/rub]:";
-	textBox2->Text = System::Convert::ToString(curs.sell.dollar);
+	textBox2->Text = System::Convert::ToString(curs.sell.dollar) + "0";
 	
 	
 
 	
 }
 private: System::Void radioButton2_CheckedChanged(System::Object^ sender, System::EventArgs^ e) { // Рубли в доллары (покупка)
+	//button1->Enabled = true;
 	label2->Text = "Курс обмена [rub/$]:";
-	textBox2->Text = System::Convert::ToString(curs.buy.dollar);
+	textBox2->Text = System::Convert::ToString(curs.buy.dollar) + "0";
 
 
 }
 private: System::Void radioButton3_CheckedChanged(System::Object^ sender, System::EventArgs^ e) { // Евро в рубли (продажа)
-
+	//button1->Enabled = true;
 	label2->Text = "Курс обмена [€/rub]:";
-	textBox2->Text = System::Convert::ToString(curs.sell.euro);
+	textBox2->Text = System::Convert::ToString(curs.sell.euro) + "0";
 
 }
 private: System::Void radioButton4_CheckedChanged(System::Object^ sender, System::EventArgs^ e) { // Рубли в евро (покупка)
-
+	//button1->Enabled = true;
 	label2->Text = "Курс обмена [rub/€]:";
-	textBox2->Text = System::Convert::ToString(curs.buy.euro);
+	textBox2->Text = System::Convert::ToString(curs.buy.euro) + "0";
 }
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 
-	if (!(textBox1->Text == System::Convert::ToString(""))) {
-
-		textBox3->Text = textBox1->Text;
-		if (label2->Text == "Курс обмена [€/rub]:") {
-			label7->Text = "€";
-			label8->Text = "rub";
-			textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text) * 1000) / 1000));
-			
-		}
-		else if (label2->Text == "Курс обмена [rub/€]:") {
-			label7->Text = "rub";
-			label8->Text = "€";
-			textBox4->Text = (System::Convert::ToString(  floor(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text)*1000)/1000    ));
-			
-		}
-		else if (label2->Text == "Курс обмена [rub/$]:") {
-			label7->Text = "rub";
-			label8->Text = "$";
-			textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text) * 1000) / 1000));
-		}
-		else if (label2->Text == "Курс обмена [$/rub]:") {
-			label7->Text = "$";
-			label8->Text = "rub";
-			textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text) * 1000) / 1000));
-
-
-		}
-		
-
+	endsWithZero(this->textBox1);
+	if (textBox1->Text == "0," || textBox1->Text == "0" || textBox1->Text == "0,00" || textBox1->Text == "0") {
+		button1->Enabled = false;
+		MessageBox::Show("Введенная сумма слишком мала для конвертации");
 	}
 	else {
-		Clear(this->textBox3, this->textBox4);
+		button1->Enabled = true;
+		if (!(textBox1->Text == System::Convert::ToString(""))) {
+
+			textBox3->Text = textBox1->Text;
+			if (label2->Text == "Курс обмена [€/rub]:") {
+				label7->Text = "€";
+				label8->Text = "rub";
+				textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text) * 100) / 1000));
+
+			}
+			else if (label2->Text == "Курс обмена [rub/€]:") {
+				label7->Text = "rub";
+				label8->Text = "€";
+				textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text) * 100) / 1000));
+
+			}
+			else if (label2->Text == "Курс обмена [rub/$]:") {
+				label7->Text = "rub";
+				label8->Text = "$";
+				textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text) * 100) / 1000));
+			}
+			else if (label2->Text == "Курс обмена [$/rub]:") {
+				label7->Text = "$";
+				label8->Text = "rub";
+				textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text) * 100) / 1000));
+
+
+			}
+
+
+		}
+		else {
+			Clear(this->textBox3, this->textBox4);
+		}
 	}
+
+	
 }
 private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->Close();
@@ -550,13 +609,56 @@ private: System::Void textBox1_Click(System::Object^ sender, System::EventArgs^ 
 	
 }
 private: System::Void textBox1_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
-	if (textBox1->TextLength >= 6 && e->KeyChar != 8) { // 8 backspace
+	if (textBox1->TextLength >= 9 && e->KeyChar != 8) { // 8 backspace
 		e->Handled = true;
 	}
-
+	
 
 	formatfunc(e, this->textBox1);
 
+}
+private: System::Void Form1_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (textBox1->Text == "") {
+		button1->Enabled = false;
+	}
+	else {
+		button1->Enabled = true;
+	}
+	/*
+	if (textBox1->Text == "0," || textBox1->Text == "0" || textBox1->Text == "0,00" || textBox1->Text == "0") {
+		button1->Enabled = false;
+		MessageBox::Show("Введенная сумма слишком мала для конвертации");
+	}
+	else {
+		button1->Enabled = true;
+	}
+	*/
+
+	//String^ out = "index of , :" + textBox1->Text->IndexOf(",").ToString() + "\n" 
+	//	+ "text lenght: " + textBox1->TextLength.ToString();
+
+	////endsWithZero(this->textBox1);
+	//MessageBox::Show(out);
+}
+private: System::Void textBox1_Leave(System::Object^ sender, System::EventArgs^ e) {
+	
+	endsWithZero(this->textBox1);
+}
+private: System::Void Form1_Shown(System::Object^ sender, System::EventArgs^ e) {
+	
+	radioButton1->Checked = true;
+	radioButton1->PerformClick(); //мб убрать
+	button1->Enabled = false;
+}
+private: System::Void textBox4_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	if ((textBox4->Text->IndexOf(",") - textBox4->TextLength) == -2) {
+		textBox4->Text += 0;
+	}
+}
+private: System::Void textBox3_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	if ((textBox3->Text->IndexOf(",") - textBox3->TextLength) == -2) {
+		textBox3->Text += 0;
+	}
 }
 };
 }
