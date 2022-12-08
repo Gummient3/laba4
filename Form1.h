@@ -489,8 +489,10 @@ namespace CppCLRWinformsProjekt {
 			this->Controls->Add(this->textBox3);
 			this->Controls->Add(this->textBox2);
 			this->Controls->Add(this->textBox1);
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->MaximizeBox = false;
 			this->Name = L"Form1";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Form1";
 			this->Shown += gcnew System::EventHandler(this, &Form1::Form1_Shown);
 			this->Click += gcnew System::EventHandler(this, &Form1::Form1_Click);
@@ -530,7 +532,7 @@ private: System::Void radioButton1_Paint(System::Object^ sender, System::Windows
 }
 private: System::Void radioButton1_Click(System::Object^ sender, System::EventArgs^ e) { // Доллары в рубли (продажа)
 	//button1->Enabled = true;
-	label2->Text = "Курс обмена [$/rub]:";
+	label2->Text = "Курс обмена [rub/$]: ";
 	textBox2->Text = System::Convert::ToString(curs.sell.dollar) + "0";
 	
 	
@@ -546,7 +548,7 @@ private: System::Void radioButton2_CheckedChanged(System::Object^ sender, System
 }
 private: System::Void radioButton3_CheckedChanged(System::Object^ sender, System::EventArgs^ e) { // Евро в рубли (продажа)
 	//button1->Enabled = true;
-	label2->Text = "Курс обмена [€/rub]:";
+	label2->Text = "Курс обмена [rub/€]: ";
 	textBox2->Text = System::Convert::ToString(curs.sell.euro) + "0";
 
 }
@@ -567,27 +569,27 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		if (!(textBox1->Text == System::Convert::ToString(""))) {
 
 			textBox3->Text = textBox1->Text;
-			if (label2->Text == "Курс обмена [€/rub]:") {
+			if (label2->Text == "Курс обмена [rub/€]: ") {
 				label7->Text = "€";
 				label8->Text = "rub";
-				textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text) * 100) / 1000));
+				textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text) * 100) / 100));
 
 			}
 			else if (label2->Text == "Курс обмена [rub/€]:") {
 				label7->Text = "rub";
 				label8->Text = "€";
-				textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text) * 100) / 1000));
+				textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text) * 100) / 100));
 
 			}
 			else if (label2->Text == "Курс обмена [rub/$]:") {
 				label7->Text = "rub";
 				label8->Text = "$";
-				textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text) * 100) / 1000));
+				textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) / System::Convert::ToDouble(textBox2->Text) * 100) / 100));
 			}
-			else if (label2->Text == "Курс обмена [$/rub]:") {
+			else if (label2->Text == "Курс обмена [rub/$]: ") {
 				label7->Text = "$";
 				label8->Text = "rub";
-				textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text) * 100) / 1000));
+				textBox4->Text = (System::Convert::ToString(floor(System::Convert::ToDouble(textBox1->Text) * System::Convert::ToDouble(textBox2->Text) * 100) / 100));
 
 
 			}
@@ -597,6 +599,15 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		else {
 			Clear(this->textBox3, this->textBox4);
 		}
+	}
+	if (textBox4->Text != "") {
+		if ((textBox4->Text == "00") || (System::Convert::ToDouble(textBox4->Text) < 0.02)) {
+			MessageBox::Show("Введенная сумма слишком мала \nдля конвернтации");
+			textBox4->Text = "";
+		}
+
+
+
 	}
 
 	
@@ -651,6 +662,7 @@ private: System::Void Form1_Shown(System::Object^ sender, System::EventArgs^ e) 
 	button1->Enabled = false;
 }
 private: System::Void textBox4_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	
 	if ((textBox4->Text->IndexOf(",") - textBox4->TextLength) == -2) {
 		textBox4->Text += 0;
 	}
